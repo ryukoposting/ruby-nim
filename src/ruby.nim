@@ -4,7 +4,12 @@
 ## libruby's C API can be directly accessed using the
 ## `ruby/lowlevel` module. The rest of this package
 ## provides high-level abstractions over the C API.
-## 
+
+# 
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+# 
 
 import ruby/[lowlevel, types, class, methods, globals, modules, misc, exceptions, objects, arrays, hashes, calls]
 

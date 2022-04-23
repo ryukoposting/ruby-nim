@@ -1,5 +1,11 @@
 ## Direct bindings to libruby.
 
+# 
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+# 
+
 when not defined(Ruby_LibName):
   when defined(windows):
     const Ruby_LibName* = "libx64-ucrt-ruby(|240|250|260|270|300).dll"
