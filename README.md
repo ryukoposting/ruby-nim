@@ -19,14 +19,16 @@ proc say_goodbye(self: RawValue): void {.rbModuleMethod: myModule.} =
   echo "Goodbye ", self.getInstanceVar("name").getString()
 ```
 
+See the `examples` directory for more!
+
 ## Testing
 
 This package has been validated with the following versions of `libruby`:
 
-| Status                        | Version | Platform            |
-|-------------------------------|---------|---------------------|
-| Regularly tested              | 2.7     | Ubuntu              |
-| Will test soon                | 2.7     | Windows (MinGW-64)  |
+| Status                        | Version | Platform              |
+|-------------------------------|---------|-----------------------|
+| Regularly tested              | 2.7     | Ubuntu                |
+| *Will test soon*              | *2.7*   | *Windows (MinGW-64)*  |
 
 ## Usage
 
