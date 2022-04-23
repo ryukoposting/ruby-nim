@@ -1,0 +1,4 @@
+- add examples for:
+  - `RubyHash`
+  - `RubyArray`
+- document... everything

@@ -1,6 +1,10 @@
-# This is just an example to get you started. A typical library package
-# exports the main API in this file. Note that you cannot rename this file
-# but you can remove it if you wish.
+## Nim bindings to libruby, the library backing Matz's
+## Ruby Interpreter (MRI).
+## 
+## libruby's C API can be directly accessed using the
+## `ruby/lowlevel` module. The rest of this package
+## provides high-level abstractions over the C API.
+## 
 
 import ruby/[lowlevel, types, class, methods, globals, modules, misc, exceptions, objects, arrays, hashes, calls]
 
@@ -44,14 +48,20 @@ export hashes
 export calls
 
 
-template initRuby* =
+proc initRuby* =
+  ## Initialize the Ruby runtime. This must be called before
+  ## doing *anything* else with Ruby!
   setup()
   initLoadpath()
 
-template cleanupRuby* =
+proc cleanupRuby* =
+  ## Cleans up the Ruby runtime. This causes (pretty much) all
+  ## resources used by Ruby to be freed. Ruby cannot be
+  ## re-initialized after this function is called.
   cleanup(0)
 
 proc eval*(rubyCode: string): RawValue =
+  ## Evaluate some Ruby code.
   var status: cint = 0
 
   block:
@@ -68,6 +78,8 @@ proc eval*(rubyCode: string): RawValue =
     raise newRubyError(err)
 
 proc require*(path: string): RawValue =
+  ## `require`s a Ruby file. This maps directly to Ruby's
+  ## `require` statement.
   require(cstring(path))
 
 proc setScriptName*(name: string) =

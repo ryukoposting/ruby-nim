@@ -2,6 +2,7 @@ import ../ruby/lowlevel
 
 type
   RubyValue* = concept x
+    ## Concept covering any Nim value that represents a Ruby RawValue.
     x.rawVal is RawValue
 
   RubyObject* = object

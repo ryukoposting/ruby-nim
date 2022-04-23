@@ -1,3 +1,5 @@
+## Direct bindings to libruby.
+
 when not defined(Ruby_LibName):
   when defined(windows):
     const Ruby_LibName* = "libx64-ucrt-ruby(|240|250|260|270|300).dll"
@@ -9,10 +11,14 @@ when not defined(Ruby_LibName):
 {.push callConv: cdecl, dynlib: Ruby_LibName.}
 
 
-template rbmark* {.pragma.}
+template rbmark* {.pragma.} ## \
+  ## Pragma used to tell the `ruby` module objects of this type
+  ## should be inspected by the Ruby garbage collector. If your
+  ## object type contains `RawValue`s, you should probably use
+  ## this.
 
 type
-  RawValue* {.rbmark.} = distinct culong
+  RawValue* {.rbmark.} = distinct culong ## RawValues represent references to objects that are meaningful to the Ruby interpreter.
   RawValueSeq* {.rbmark.} = distinct seq[RawValue]
   Id* = distinct culong
   IntPtr = clong
