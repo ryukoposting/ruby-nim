@@ -14,10 +14,11 @@ proc call*(self: RubyValue, methodName: string, nargs: int, args: ptr RawValue):
     args
   )
 
-template rawVal*(x: int): RawValue = x.toRawInt()
-template rawVal*(x: float): RawValue = x.toRawFloat()
-template rawVal*(x: string): RawValue = x.toRawStr()
-template rawVal*(x: bool): RawValue = x.toRawBool()
+when not defined(noRubyPrimitiveConversions):
+  template rawVal*(x: int): RawValue = x.toRawInt()
+  template rawVal*(x: float): RawValue = x.toRawFloat()
+  template rawVal*(x: string): RawValue = x.toRawStr()
+  template rawVal*(x: bool): RawValue = x.toRawBool()
 
 
 template call*(self: RubyValue, methodName: string): RawValue =
