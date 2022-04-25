@@ -18,14 +18,23 @@ when not defined(Ruby_LibName):
 
 
 template rbmark* {.pragma.} ## \
-  ## Pragma used to tell the `ruby` module objects of this type
+  ## Pragma used to tell the ``ruby`` module that objects of this type
   ## should be inspected by the Ruby garbage collector. If your
-  ## object type contains `RawValue`s, you should probably use
+  ## object type contains ``RawValue``s, you should probably use
   ## this.
+  ## 
+  ## ``{.rbmark.}`` objects SHOULD NOT contain any data that is managed
+  ## by the Nim garbage collector. This includes ``string`` types,
+  ## ``seq`` types, and ``ref`` types.
+  ## 
+  ## When ``wrapObjectType`` generates the mark-and-sweep implementation
+  ## for your object, it looks for any fields whose type is marked with
+  ## ``{.rbmark.}``. Those fields are recursively traversed by the
+  ## mark-and-sweep algorithm, marking any ``RawValue``s found along the way.
 
 type
-  RawValue* {.rbmark.} = distinct culong ## RawValues represent references to objects that are meaningful to the Ruby interpreter.
-  RawValueSeq* {.rbmark.} = distinct seq[RawValue]
+  RawValue* {.rbmark.} = distinct culong ## \
+    ## RawValues represent references to objects that are meaningful to the Ruby interpreter.
   Id* = distinct culong
   IntPtr = clong
   UintPtr = culong
@@ -291,9 +300,6 @@ proc hashASet*(raw: RawValue, key: RawValue, value: RawValue): RawValue {.import
 
 
 proc rbMarkImpl*(raw: RawValue) {.importc: "rb_gc_mark", discardable.}
-proc rbMarkImpl*(raw: RawValueSeq) =
-  for val in cast[seq[RawValue]](raw):
-    rbMarkImpl(val)
 
 
 template RUBY_INIT_STACK* =
