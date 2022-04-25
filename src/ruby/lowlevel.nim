@@ -311,4 +311,5 @@ template TypedData_GetStruct*(raw: RawValue, T: typedesc, dataType: pointer, sva
   {.emit: ["TypedData_Get_Struct(", raw, ", ", T, ", ", dataType, ", ", sval, ");"] .}
 
 proc `==`*(x, y: RawValue): bool =
-  cast[culong](x) == cast[culong](y)
+  let reslt = cast[culong](x.funcall(intern("=="), 1, y))
+  return reslt != cast[culong](qFalse) and reslt != cast[culong](qNil)
