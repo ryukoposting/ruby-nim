@@ -21,7 +21,11 @@ proc newRubyArray*(initialSize = 0): RubyArray =
 
 proc `[]`*(self: RubyArray, index: int): RawValue =
   ## Access a ruby Array.
-  self.rawVal.aryEntry(index)
+  self.rawVal.call("[]", index)
+
+proc `[]=`*(self: RubyArray, index: int, value: RubyValue) =
+  ## Set an item in a ruby Array
+  discard self.rawVal.call("[]=", index, value.rawVal)
 
 proc len*(self: RubyArray): int =
   ## Get the length of the ruby Array.
