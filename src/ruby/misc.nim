@@ -225,10 +225,10 @@ template setInstanceVar*(target: RubyValue, ident: string, x: bool) =
 proc getInstanceVar*(target: RubyValue, ident: string): RawValue =
   ## Get an instance variable of ``target``.
   ## 
-  ## .. code-block:: Nim
+  ## .. code-block:: nim
   ##   # identical to my_var.get_instance_var(:@foo)
   ##   myVar.getInstanceVar("foo")
-  ##
+  
   var realIdent = "@" & ident
   result = target.rawVal.ivGet(realIdent.cstring)
 
@@ -252,10 +252,11 @@ proc inspect*(self: RubyValue): string =
 proc getMethod*(self: RubyValue, sym: string): RawValue =
   ## Equivalent to Ruby's ``method`` method.
   ## 
-  ## .. code-block:: Nim
+  ## .. code-block:: nim
   ##   # identical to my_var.method(:foo)
   ##   myVar.getMethod("foo")
-  ##
+  ## 
+  
   if not self.respondsTo "method":
     raise RubyError.newException("no such method: inspect")
 

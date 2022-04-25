@@ -108,7 +108,49 @@ proc generateMethodDef(parent, body: NimNode, prefix: string, methodName: NimNod
 
 
 macro rbmethod*(parent: typed, body: untyped): untyped =
-  # echo $parent.kind, " ", $body.kind
+  ## Mark a proc with this macro to make it available as a method of ``RubyObjectType[T]``.
+  ## The proc's first argument is the object itself, a ``var T``.
+  ## The proc can take any of the following argument types:
+  ## 
+  ## - ``RawValue``
+  ## - Basic types: ``int``, ``bool``, ``float``, ``string``
+  ## - Ruby types: ``RubyHash``, ``RubyArray``, ``RubyObject``
+  ## 
+  ## The proc can return any of the following types:
+  ## - ``RawValue``
+  ## - ``void``
+  ## - Basic types: ``int``, ``bool``, ``float``, ``string``
+  ## 
+  ## A few gotchas:
+  ## 
+  ## - This macro expects each argument to have its type specified separately.
+  ##   In other words, the macro doesn't know what to do with ``proc myfunc(x, y, z: int)``
+  ##   but it will handle ``proc myfunc(x: int, y: int, z: int)`` just fine.
+  ## 
+  ## - This macro expects an explicit return type, even for a proc returning void.
+  ## 
+  ## And a nice feature:
+  ## 
+  ## - If you want the name of the Nim proc to be different from the Ruby method's name,
+  ##   use the pragma like this: ``{.rbmethod: (RbObjectType, "my_method_name").}``
+  ## 
+  ## .. code-block:: nim
+  ##   import ruby
+  ##   type AnObject {.rbmark.} = object
+  ##     x, y: int
+  ## 
+  ##   var RbObject = wrapObjectType[AnObject]("AnObject")
+  ##   RbObject.useDefaultAllocator(AnObject)
+  ## 
+  ##   proc initialize(self: var AnObject, x: int, y: int, message: string): void {.rbmethod: RbObject.} =
+  ##     self.x = x
+  ##     self.y = y
+  ##     echo "initialized! ", message
+  ## 
+  ##   eval """
+  ##   x = AnObject.new(3, 4, "hello world!")
+  ##   """
+  ##
   let parentId =
     if parent.kind == nnkSym:
       parent

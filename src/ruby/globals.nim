@@ -67,7 +67,6 @@ proc generateWrapperProc*(body: NimNode, prefix="rubyGlobalProc_"): NimNode =
     result[^1][^2][0][^1].add argConversionExpr
 
 
-  # TODO replace result[^1][^1][^1] with wrapped result value
   let retTypename = $body[3][0]
   let resultId = result[^1][^1][^1]
   case retTypename
@@ -100,6 +99,32 @@ proc generateGlobalProcDef(body: NimNode, prefix="rubyGlobalProc_"): NimNode =
 
 
 macro rbproc*(body: untyped): untyped =
+  ## Mark a proc with this macro to make it available inside of ruby.
+  ## The proc can take any of the following argument types:
+  ## 
+  ## - ``RawValue``
+  ## - Basic types: ``int``, ``bool``, ``float``, ``string``
+  ## - Ruby types: ``RubyHash``, ``RubyArray``, ``RubyObject``
+  ## 
+  ## The proc can return any of the following types:
+  ## - ``RawValue``
+  ## - ``void``
+  ## - Basic types: ``int``, ``bool``, ``float``, ``string``
+  ## 
+  ## A few gotchas:
+  ## 
+  ## - This macro expects each argument to have its type specified separately.
+  ##   In other words, the macro doesn't know what to do with ``proc myfunc(x, y, z: int)``
+  ##   but it will handle ``proc myfunc(x: int, y: int, z: int)`` just fine.
+  ## 
+  ## - This macro expects an explicit return type, even for a proc returning void.
+  ## 
+  ## .. code-block:: nim
+  ##   proc my_nim_function(x: int, y: int): int {.rbproc.} =
+  ##     echo "Hello from Nim!"
+  ##     return x + y
+  ## 
+  ##   assert eval("my_nim_function(2, 3)").getInt() == 5
   result = newStmtList(
     body,
     generateWrapperProc(body),
