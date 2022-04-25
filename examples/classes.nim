@@ -14,6 +14,12 @@ initRuby()
 # RTree helps set up the Ruby class
 var RTree = wrapObjectType[Tree]("Tree")
 
+# Be careful! By calling wrapObjectType, we have created a
+# Ruby class that wraps a Nim object type. The fields in
+# the Nim object must only use Ruby's heap, otherwise bad
+# things can happen. Don't use seqs, strings, or ref types
+# in a Nim object type if you're going to wrap it.
+
 RTree.useDefaultAllocator(Tree) # boilerplate. pls ignore
 
 # define the "initialize" method for this class.
