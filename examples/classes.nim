@@ -1,6 +1,6 @@
 import ruby
 
-# declare a new object type. The {.]rbmark.} pragma
+# declare a new object type. The {.rbmark.} pragma
 # tells the library that objects with this type should
 # be analyzed by ruby's mark-and-sweep garbage collector.
 type
