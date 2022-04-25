@@ -12,23 +12,23 @@ type
     ## Concept covering any Nim value that represents a Ruby RawValue.
     x.rawVal is RawValue
 
-  RubyObject* = object
+  RubyObject* {.rbmark.} = object
     rawVal*: RawValue
 
-  RubyModule* = object
+  RubyModule* {.rbmark.} = object
     rawVal*: RawValue
 
   RubyObjectType*[T] = object
     rbDataType*: RbDataType
     rawVal*: RawValue
 
-  RubyClass* = object
+  RubyClass* {.rbmark.} = object
     rawVal*: RawValue
 
-  RubyArray* = object
+  RubyArray* {.rbmark.} = object
     rawVal*: RawValue
 
-  RubyHash* = object
+  RubyHash* {.rbmark.} = object
     rawVal*: RawValue
 
 func `rawVal`* (rv: RawValue): RawValue = rv
