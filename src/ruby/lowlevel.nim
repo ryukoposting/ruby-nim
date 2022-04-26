@@ -244,7 +244,8 @@ proc gvSet*(name: cstring, value: RawValue): RawValue {.importc: "rb_gv_set", di
 proc gvGet*(name: cstring): RawValue {.importc: "rb_gv_get", discardable.}
 proc ivGet*(target: RawValue, name: cstring): RawValue {.importc: "rb_iv_get", discardable.}
 proc ivSet*(target: RawValue, name: cstring, value: RawValue): RawValue {.importc: "rb_iv_set", discardable.}
-
+proc constSet*(target: RawValue, id: Id, value: RawValue) {.importc: "rb_const_set", discardable.}
+proc constGet*(target: RawValue, id: Id): RawValue {.importc: "rb_const_get", discardable.}
 
 proc defineClass*(name: cstring, super: RawValue): RawValue {.importc: "rb_define_class", discardable.}
 proc defineModule*(name: cstring): RawValue {.importc: "rb_define_module", discardable.}
