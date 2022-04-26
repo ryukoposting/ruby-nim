@@ -233,6 +233,16 @@ proc getInstanceVar*(target: RubyValue, ident: string): RawValue =
   result = target.rawVal.ivGet(realIdent.cstring)
 
 
+proc setConst*(target: RubyClass | RubyModule, ident: string, value: RubyValue) =
+  ## Set a constant value of a Ruby class/module.
+  discard target.rawVal.defineConst(ident.cstring, value.rawVal)
+
+
+proc getConst*(target: RubyClass | RubyModule, ident: string): RawValue =
+  ## Access a constant value of a Ruby class/module.
+  return target.rawVal.constGet(intern(ident))
+
+
 proc respondsTo*(self: RubyValue, sym: string): bool =
   ## Equivalent to Ruby's ``respond_to?`` method.
   var
