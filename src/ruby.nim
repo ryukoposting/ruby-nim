@@ -11,7 +11,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 # 
 
-import ruby/[lowlevel, types, class, methods, globals, modules, misc, exceptions, objects, arrays, hashes, calls]
+import ruby/[lowlevel, types, class, methods, globals, modules, misc, exceptions, objects, arrays, hashes, calls, regexp]
 
 # lowlevel
 # export lowlevel
@@ -51,6 +51,9 @@ export hashes
 
 # calls
 export calls
+
+# regexp
+export regexp
 
 
 proc initRuby* =

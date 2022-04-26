@@ -31,4 +31,7 @@ type
   RubyHash* {.rbmark.} = object
     rawVal*: RawValue
 
+  RubyRegexp* {.rbmark.} = object
+    rawVal*: RawValue
+
 func `rawVal`* (rv: RawValue): RawValue = rv
