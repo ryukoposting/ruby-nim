@@ -6,15 +6,17 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 # 
 
-when not defined(Ruby_LibName):
+when not defined(rubyCustomLibName):
   when defined(windows):
-    const Ruby_LibName* = "libx64-ucrt-ruby(|240|250|260|270|300).dll"
+    const RubyLibName* = "x64-(msvcrt|ucrt)-ruby(|240|250|260|270|300|310).dll"
   elif defined(macosx):
-    const Ruby_LibName* = "libruby(|-2.4|-2.5|-2.6|-2.7|-3.0).dylib"
+    const RubyLibName* = "libruby(|-2.4|-2.5|-2.6|-2.7|-3.0|-3.1).dylib"
   else:
-    const Ruby_LibName* = "libruby(|-2.4|-2.5|-2.6|-2.7|-3.0).so"
+    const RubyLibName* = "libruby(|-2.4|-2.5|-2.6|-2.7|-3.0|-3.1).so"
+else:
+  const RubyLibName* = rubyCustomLibName
 
-{.push callConv: cdecl, dynlib: Ruby_LibName.}
+{.push callConv: cdecl, dynlib: RubyLibName.}
 
 
 template rbmark* {.pragma.} ## \
@@ -33,11 +35,9 @@ template rbmark* {.pragma.} ## \
   ## mark-and-sweep algorithm, marking any ``RawValue``s found along the way.
 
 type
-  RawValue* {.rbmark.} = distinct culong ## \
+  RawValue* {.rbmark, importc: "VALUE", header: "<ruby/ruby.h>", nodecl.} = distinct BiggestUInt ## \
     ## RawValues represent references to objects that are meaningful to the Ruby interpreter.
-  Id* = distinct culong
-  IntPtr = clong
-  UintPtr = culong
+  Id* {.importc: "ID", header: "<ruby/ruby.h>", nodecl.} = distinct BiggestUInt
 
 type
   RubyDataFunc* = proc(self: pointer) {.cdecl, gcsafe.}
@@ -312,4 +312,4 @@ template TypedData_GetStruct*(raw: RawValue, T: typedesc, dataType: pointer, sva
   {.emit: ["TypedData_Get_Struct(", raw, ", ", T, ", ", dataType, ", ", sval, ");"] .}
 
 proc `==`*(x, y: RawValue): bool =
-  cast[culong](x) == cast[culong](y)
+  cast[BiggestUInt](x) == cast[BiggestUInt](y)
