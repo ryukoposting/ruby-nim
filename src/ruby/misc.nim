@@ -136,11 +136,11 @@ proc toRawBool*(value: bool): RawValue =
 
 proc toRawInt*(value: int): RawValue =
   ## Convert a Nim ``int`` to a Ruby integer.
-  long2num(value)
+  long2num(value.clong)
 
 proc toRawInt*(value: uint): RawValue =
   ## Convert a Nim ``uint`` to a Ruby integer.
-  ulong2num(value)
+  ulong2num(value.culong)
 
 proc toRawInt*(value: float): RawValue =
   ## Convert a Nim ``float`` to a Ruby integer.
@@ -148,19 +148,19 @@ proc toRawInt*(value: float): RawValue =
 
 proc toRawFloat*(value: int): RawValue =
   ## Convert a Nim ``int`` to a Ruby float.
-  dbl2num(value.float)
+  dbl2num(value.cdouble)
 
 proc toRawFloat*(value: uint): RawValue =
   ## Convert a Nim ``uint`` to a Ruby float.
-  dbl2num(value.float)
+  dbl2num(value.cdouble)
 
 proc toRawFloat*(value: float): RawValue =
   ## Convert a Nim ``float`` to a Ruby float.
-  dbl2num(value)
+  dbl2num(value.cdouble)
 
 proc toRawStr*(value: string): RawValue =
   ## Convert a Nim ``string`` to a Ruby string.
-  strNew(value.cstring, value.len())
+  strNew(value.cstring, value.len().clong)
 
 proc toRawSym*(value: string): RawValue =
   ## Convert a Nim ``string`` to a Ruby symbol.
@@ -199,6 +199,15 @@ proc className*(value: RubyValue): string =
   var s = objClassName(value.rawVal)
   return $s
 
+proc class*(value: RubyValue): RubyClass =
+  ## Get's the ``RubyValue``'s class.
+  ## 
+  ## Depending on the version of Ruby that was loaded, you might
+  ## be able to do ``value.call("class")`` to get the value's
+  ## class - but don't actually do that. Always use ``value.class()``
+  ## because it's faster and it works on all tested Ruby versions.
+  ## 
+  RubyClass(rawVal: objClass(value.rawVal))
 
 proc setInstanceVar*(target: RubyValue, ident: string, value: RubyValue) =
   ## Set an instance variable of ``target`` to ``value``.

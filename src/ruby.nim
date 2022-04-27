@@ -78,7 +78,7 @@ proc eval*(rubyCode: string): RawValue =
       setErrInfo(qNil)
       raise newRubyError(err)
 
-  result = evalStringProtect(rubyCode, addr status)
+  result = evalStringProtect(rubyCode.cstring, addr status)
 
   if status != 0:
     var err = errInfo()

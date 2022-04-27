@@ -28,8 +28,8 @@ test "create instance":
   setGlobal "value", eval("MyObject").call("new", 3, 5)
   let value = getGlobal "value"
   check value.call("x").getInt() == 8
-  check value.call("class").isClass()
-  check value.call("class").call("to_s").getString() == "MyObject"
+  check value.className() == "MyObject"
+  check value.class().inspect() == "MyObject"
 
 test "explicit method name":
   let value = getGlobal "value"

@@ -10,7 +10,7 @@ import ../ruby/private/[utils]
 
 proc call*(self: RubyValue, methodName: string, nargs: int, args: ptr RawValue): RawValue =
   self.rawVal.funcallv(
-    intern(methodName), nargs.cint,
+    intern(methodName.cstring), nargs.cint,
     args
   )
 
