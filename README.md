@@ -25,10 +25,10 @@ See the `examples` directory for more!
 
 This package has been validated with the following versions of `libruby`:
 
-| Package Version  | `libruby` Version | Platform              | Status             |
-|------------------|-------------------|-----------------------|--------------------|
-| 0.1.0 and newer  | 2.7.0p0           | Ubuntu                | Tested, working    |
-| 0.3.0 and newer  | 3.0.3p157         | Windows (MinGW-64)    | Tested, working    |
+| Package Version  | `libruby` Version | Platform              | Status          |
+|------------------|-------------------|-----------------------|-----------------|
+| 0.1.0 and newer  | 2.7.0p0           | Ubuntu                | Unit tests pass |
+| 0.3.0 and newer  | 3.0.3p157         | Windows (MinGW-64)    | Unit tests pass |
 
 ## Usage
 
