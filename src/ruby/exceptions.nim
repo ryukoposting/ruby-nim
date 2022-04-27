@@ -81,7 +81,7 @@ proc newRubyError*(err: RawValue): ref RubyError =
     backtrace: seq[string] = @[]
 
   while true:
-    btEnt = aryEntry(backtraceRaw, i)
+    btEnt = aryEntry(backtraceRaw, i.clong)
     if btEnt == qNil:
       break
     
