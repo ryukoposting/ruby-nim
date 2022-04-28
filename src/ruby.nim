@@ -59,6 +59,15 @@ export regexp
 proc initRuby* =
   ## Initialize the Ruby runtime. This must be called before
   ## doing *anything* else with Ruby!
+  when defined(windows):
+    # On windows, ruby_sysinit calls rb_w32_sysinit, which sets up
+    # critical parts of the execution environment. ruby_sysinit
+    # is not mission-critical on any other platform, as far as I
+    # can tell.
+    var
+      fakeArgc {.global.}: cint = 0
+      fakeArgv {.global.}: array[1, ptr cchar]
+    rubySysInit(addr fakeArgc, cast[ptr ptr ptr cchar](addr fakeArgv))
   setup()
   initLoadpath()
 

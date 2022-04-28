@@ -169,6 +169,7 @@ var
   tMask* {.importc: "RUBY_T_MASK", header: "<ruby/ruby.h>", nodecl.}: cint
 
 proc setup*: cint {.importc: "ruby_setup", header: "<ruby/ruby.h>", discardable.}
+proc rubySysInit*(argc: ptr cint, argv: ptr ptr ptr cchar): void {.importc: "ruby_sysinit", header: "<ruby/ruby.h>", discardable.}
 proc initLoadpath* {.importc: "ruby_init_loadpath", header: "<ruby/ruby.h>", discardable.}
 proc cleanup*(_: cint): cint {.importc: "ruby_cleanup", discardable.}
 
