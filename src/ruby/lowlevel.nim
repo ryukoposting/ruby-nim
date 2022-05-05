@@ -6,15 +6,12 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 # 
 
-when not defined(rubyCustomLibName):
-  when defined(windows):
-    const RubyLibName* = "x64-(msvcrt|ucrt)-ruby(|240|250|260|270|300|310).dll"
-  elif defined(macosx):
-    const RubyLibName* = "libruby(|-2.4|-2.5|-2.6|-2.7|-3.0|-3.1).dylib"
-  else:
-    const RubyLibName* = "libruby(|-2.4|-2.5|-2.6|-2.7|-3.0|-3.1).so"
+when defined(windows):
+  const RubyLibName {.strdefine.} = "x64-(msvcrt|ucrt)-ruby(|240|250|260|270|300|310).dll"
+elif defined(macosx):
+  const RubyLibName {.strdefine.} = "libruby(|-2.4|-2.5|-2.6|-2.7|-3.0|-3.1).dylib"
 else:
-  const RubyLibName* = rubyCustomLibName
+  const RubyLibName {.strdefine.} = "libruby(|-2.4|-2.5|-2.6|-2.7|-3.0|-3.1).so"
 
 {.push callConv: cdecl, dynlib: RubyLibName.}
 
