@@ -3,6 +3,10 @@ import ruby
 
 initRuby()
 
+test "basic sym construction":
+  let foo = sym"foo"
+  check foo.inspect() == "foo"
+
 test "can get ints":
   check eval("1 + 1").getInt() == 2
 

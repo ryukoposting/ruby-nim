@@ -101,3 +101,7 @@ proc require*(path: string): RawValue =
 
 proc setScriptName*(name: string) =
   setScriptName(cstring(name))
+
+template sym*(symname: static string): RawValue =
+  ## Abbreviated version of ``toRawSym()``
+  symname.toRawSym()
